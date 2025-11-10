@@ -1,4 +1,4 @@
-.PHONY: help venv install clean test lint format
+.PHONY: help venv install clean test lint format act
 
 VENV_DIR := wikienv
 PYTHON := python3
@@ -10,6 +10,7 @@ help:
 	@echo "  make venv       - Create virtual environment"
 	@echo "  make install    - Install dependencies"
 	@echo "  make dev        - Create venv and install dependencies"
+	@echo "  make act        - Activate virtual environment"
 	@echo "  make clean      - Remove virtual environment and cache files"
 	@echo "  make test       - Run tests"
 	@echo "  make lint       - Run linting checks"
@@ -30,6 +31,9 @@ install: venv
 dev: install
 	@echo "Development environment ready!"
 	@echo "Activate with: source $(VENV_DIR)/bin/activate"
+
+act:
+	@bash -c "source $(VENV_DIR)/bin/activate && bash"
 
 clean:
 	@echo "Cleaning up..."
