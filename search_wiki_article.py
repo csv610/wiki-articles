@@ -174,7 +174,7 @@ class WikiArticles:
 
 import sys
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) < 2:
         print("Usage: python search_wiki_article.py <article_title> [language]")
         sys.exit(1)
@@ -200,3 +200,6 @@ if __name__ == "__main__":
     print(f"\n--- METADATA ---")
     print(f"Total characters: {len(article['full_text'])}")
     print(f"Sections: {', '.join(article['sections'][:5])}...")
+
+if __name__ == "__main__":
+   main()
