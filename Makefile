@@ -1,9 +1,17 @@
-.PHONY: help venv install clean test lint format act
+.PHONY: help venv install clean test lint format act check-venv
 
 VENV_DIR := wikienv
 PYTHON := python3
 PIP := $(VENV_DIR)/bin/pip
 PYTHON_VENV := $(VENV_DIR)/bin/python
+
+check-venv:
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		echo "Error: Virtual environment is not activated."; \
+		echo "Activate with: source $(VENV_DIR)/bin/activate"; \
+		exit 1; \
+	fi
+	@echo "Virtual environment is active: $$VIRTUAL_ENV"
 
 help:
 	@echo "Available commands:"
@@ -22,10 +30,10 @@ venv:
 	@echo "Virtual environment created at $(VENV_DIR)"
 	@echo "Activate with: source $(VENV_DIR)/bin/activate"
 
-install: venv
+install: check-venv
 	@echo "Installing dependencies..."
-	$(PIP) install -q --upgrade pip setuptools wheel
-	$(PIP) install -q -r requirements.txt
+	pip install -q --upgrade pip setuptools wheel
+	pip install -q -r requirements.txt
 	@echo "Dependencies installed"
 
 dev: install
@@ -44,14 +52,14 @@ clean:
 	rm -rf *.egg-info
 	@echo "Cleanup complete"
 
-test:
+test: check-venv
 	@echo "Running tests..."
-	$(PYTHON_VENV) -m pytest
+	python -m pytest
 
-lint:
+lint: check-venv
 	@echo "Running linting checks..."
-	$(PYTHON_VENV) -m pylint search_wiki_article.py
+	python -m pylint search_wiki_article.py
 
-format:
+format: check-venv
 	@echo "Formatting code..."
-	$(PYTHON_VENV) -m black search_wiki_article.py
+	python -m black search_wiki_article.py
